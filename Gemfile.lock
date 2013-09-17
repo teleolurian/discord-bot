@@ -1,0 +1,14 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cinch (2.0.9)
+    daemons (1.1.9)
+    yahoofinance (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cinch
+  daemons
+  yahoofinance
