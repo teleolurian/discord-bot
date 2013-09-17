@@ -14,7 +14,7 @@ bot = Cinch::Bot.new do
       retval = nil
       begin
         YahooFinance.get_quotes(YahooFinance::StandardQuote, sym) do |quote|
-          retval = "[#{quote.symbol}] $#{quote.lastTrade} @ #{quote.date}"
+          retval = "[#{quote.symbol}] #{quote.name} $#{quote.lastTrade} #{quote.change} #{quote.time}"
         end
       rescue
         retval = "There was an error fetching the quote."
