@@ -18,12 +18,16 @@ bot = Cinch::Bot.new do
       retval
     end
 
-    def get_extended_quote(sym, command)
+    def get_extended_quote(sym, commands)
+      sym = sym.upcase
       quote = YahooFinance.get_quotes(YahooFinance::ExtendedQuote, sym)[sym]
+      commands = commands.split(/\s+/)
       available_methods = quote.public_methods(nil).grep(/\=$/).sort.collect {|x| x.to_s.sub(/\=$/, '')}
-      reply = "There was a problem getting your information."
-      if available_methods.include?(command)
-        reply = "$#{sym} #{command}: #{quote.send(command.intern)}"
+      return "Symbol not found!" unless available_methods.length > 0
+      reply = []
+      commands.each {|command| reply << quote.send(command.intern) if available_methods.include?(command) }
+      if reply.length > 0
+        "$#{sym}: " + reply.join(' ')
       else
         reply = "Available commands: "
         reply += available_methods.join(',')
@@ -35,7 +39,7 @@ bot = Cinch::Bot.new do
   on :message, /^\$\s*([A-Za-z\.]+)/ do |m, query|
     m.reply get_quote(query)
   end
-  on :message, /^\$\$\s*([A-Za-z\.]+)\:(\w+)/ do |m, query, command|
+  on :message, /^\$\$\s*([A-Za-z\.]+)\s*(.*)/ do |m, query, command|
     m.reply get_extended_quote(query, command)
   end
 end
