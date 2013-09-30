@@ -19,6 +19,7 @@ bot = Cinch::Bot.new do
     end
 
     def get_extended_quote(sym, command)
+      sym = sym.to_s.upcase
       quote = YahooFinance.get_quotes(YahooFinance::ExtendedQuote, sym)[sym]
       available_methods = quote.public_methods(nil).grep(/\=$/).sort.collect {|x| x.to_s.sub(/\=$/, '')}
       reply = "There was a problem getting your information."
