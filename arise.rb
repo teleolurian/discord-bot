@@ -23,7 +23,7 @@ bot = Cinch::Bot.new do
     end
   end
 
-  on :message, /^\$ (\w+)/ do |m, query|
+  on :message, /^\$([\w\.]+)/ do |m, query|
     m.reply get_quote(query)
   end
 end
