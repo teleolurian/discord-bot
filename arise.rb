@@ -4,7 +4,7 @@ Bundler.require(:default)
 
 bot = Cinch::Bot.new do
   configure do |c|
-    c.server    = 'irc.bashzen.net'
+    c.server    = '71.19.149.156'
     c.nick      = 'SisterMercy'
     c.channels  = ['#smash3000']
   end
@@ -25,7 +25,7 @@ bot = Cinch::Bot.new do
       available_methods = quote.public_methods(nil).grep(/\=$/).sort.collect {|x| x.to_s.sub(/\=$/, '')}
       return "Symbol not found!" unless available_methods.length > 0
       reply = []
-      commands.each {|command| reply << quote.send(command.intern) if available_methods.include?(command) }
+      commands.each {|command| reply << "#{command}: #{quote.send(command.intern)}" if available_methods.include?(command) }
       if reply.length > 0
         "$#{sym}: " + reply.join(' ')
       else
