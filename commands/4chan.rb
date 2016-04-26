@@ -1,6 +1,4 @@
-class SisterMercy::Commands::FourChan < SisterMercy::Command
-  def self.name; :chan; end
-
+class ChanCommand < SisterMercy::Command
   def get_board(board, page=1)
     get_json_from "http://api.4chan.org/#{board}/#{page}.json"
   end
@@ -17,22 +15,29 @@ class SisterMercy::Commands::FourChan < SisterMercy::Command
     get_raw_json_from "http://api.4chan.org/#{board}/res/#{thread_number}.json"
   end
 
-  def page_list(event, board, page=1)
-    get_board(board, page).threads.each do |thread|
-      op = thread.posts[0]
-      sub = op['sub'] ? 'Anon' : op['sub']
-      fp = op.com.gsub(/<br[^>]*>/i, $/).gsub(/<[^>]+>/,'') rescue ""
-      fp = fp.length > 255 ? (fp[0..255] + "...") : fp
-      event << "#{sub} - #{fp}"
-    end
+end
+
+
+class SisterMercy::Commands::ChanR9kRee < ChanCommand
+  def self.name; :reee; end
+
+  def random_r9k_post
+    board       = get_board('r9k')
+    threadlist  = board.threads
+    threadlist.shift
+
+    thread      = threadlist.random
+    post        = thread.posts.random
+    +post.com.gsub(/<br[^>]*>/, "\n").gsub(/<a.*?href=(\S+)[^>]+>(.*?)<\/a>/, "\\2 (\\1)").gsub(/<[^>]+>/, '')
+
   end
 
   def description
-    '4chan posts'
+    '/r9k/ posts'
   end
 
-  def execute(event, board, post=nil)
-    page_list(event, board, 1)
+  def execute(event)
+    random_r9k_post
   end
 end
 

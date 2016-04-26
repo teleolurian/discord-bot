@@ -2,6 +2,19 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'hashie'
+require 'htmlentities'
+
+class String
+  def +@
+    HTMLEntities.new.decode(self)
+  end
+end
+
+class Array
+  def random
+    self[(rand() * (self.length - 1)).to_i]
+  end
+end
 
 class SisterMercy
   Registry = {}
@@ -42,7 +55,6 @@ class SisterMercy::Command
     "I don't understand that command!"
   end
 
-
   def get_raw_json_from(url)
     Net::HTTP.get(URI.parse(url))
   end
@@ -50,5 +62,4 @@ class SisterMercy::Command
   def get_json_from(url)
     Hashie::Mash.new(JSON.parse(get_raw_json_from(url)))
   end
-
 end
