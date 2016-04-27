@@ -29,7 +29,6 @@ class SisterMercy::Commands::ChanR9kRee < ChanCommand
     thread      = threadlist.random
     post        = thread.posts.random
     +post.com.gsub(/<br[^>]*>/, "\n").gsub(/<a.*?href=(\S+)[^>]+>(.*?)<\/a>/, "\\2 (\\1)").gsub(/<[^>]+>/, '')
-
   end
 
   def description

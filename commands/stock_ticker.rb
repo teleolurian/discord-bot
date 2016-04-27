@@ -4,7 +4,8 @@ class SisterMercy::Commands::StockTicker < SisterMercy::Command
   def get_quote(sym)
     retval = nil
     YahooFinance.get_quotes(YahooFinance::StandardQuote, sym) do |quote|
-      retval = "[#{quote.symbol}] #{quote.name} $#{quote.lastTrade} #{quote.change} #{quote.time}"
+      price = quote.lastTrade % "%0.2f"
+      retval = "[#{quote.symbol}] #{quote.name} $#{price} #{quote.change} #{quote.time}"
     end
     retval
   end
@@ -33,3 +34,14 @@ class SisterMercy::Commands::StockTicker < SisterMercy::Command
 end
 
 
+class SisterMercy::Commands::StockChart < SisterMercy::Command
+  def self.name; :chart; end
+
+  def description
+    'Stock charts'
+  end
+
+  def execute(event, stock)
+    "http://chart.finance.yahoo.com/z?s=#{stock}&t=5d&q=c&l=on"
+  end
+end

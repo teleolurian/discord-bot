@@ -7,7 +7,7 @@ class SisterMercy::Commands::GoogleTranslate < SisterMercy::Command
   end
 
   def execute(event, *args)
-    text = URI.encode args.join(' ')
+    text = URI.encode args.join(' ').gsub(/^\s+|\s+$/,'')
     response = get_json_from("https://www.googleapis.com/language/translate/v2?q=#{text}&target=en&key=#{GOOGLE_API_KEY}")
     +response.data.translations.first.translatedText rescue '*Could not find translation*'
   end
