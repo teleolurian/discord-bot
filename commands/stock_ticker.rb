@@ -42,6 +42,6 @@ class SisterMercy::Commands::StockChart < SisterMercy::Command
   end
 
   def execute(event, stock)
-    "http://chart.finance.yahoo.com/z?s=#{stock}&t=5d&q=c&l=on"
+    "http://stockcharts.com/c-sc/sc?s=#{stock}&p=D&b=5&g=0&i=0"
   end
 end
