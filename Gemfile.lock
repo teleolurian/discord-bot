@@ -7,7 +7,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    daemons (1.1.9)
     discordrb (2.0.4)
       activesupport
       opus-ruby
@@ -19,6 +18,7 @@ GEM
     event_emitter (0.2.5)
     ffi (1.9.10)
     hashie (3.4.3)
+    hpricot (0.8.6)
     htmlentities (4.3.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -51,9 +51,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  daemons
   discordrb
   hashie
+  hpricot
   htmlentities
   yahoofinance
 

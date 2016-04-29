@@ -3,6 +3,7 @@ require 'net/http'
 require 'json'
 require 'hashie'
 require 'htmlentities'
+require 'hpricot'
 
 class String
   def +@
@@ -53,6 +54,10 @@ class SisterMercy::Command
 
   def execute(event, *args)
     "I don't understand that command!"
+  end
+
+  def hpricot(url)
+    Hpricot(get_raw_json_from(url))
   end
 
   def get_raw_json_from(url)
