@@ -8,8 +8,6 @@ class SisterMercy::Commands::Img < SisterMercy::Command
       url2 = "http://imgur.com" + (h / 'a.image-list-link').random['href']
       h2 = hpricot(url2)
       item = (h2 / '.post-image source, .post-image img')
-      puts item.inspect
-      puts (h2 / '.post-image').inspect
       "http:" + item.last['src']
     rescue
       "I'm sooo sorry! I can't get that right now ;_;"
