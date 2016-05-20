@@ -1,3 +1,4 @@
+require './commands/4chan'
 class SisterMercy::Commands::ChanAn < ChanCommand
   def self.name; :an; end
 
