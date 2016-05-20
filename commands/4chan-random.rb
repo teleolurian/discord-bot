@@ -1,6 +1,6 @@
 require './commands/4chan'
 class SisterMercy::Commands::ChanAn < ChanCommand
-  def self.name; :4chan; end
+  def self.name; :chan; end
 
   def random_post(b = 'an')
     board       = get_board(b)
