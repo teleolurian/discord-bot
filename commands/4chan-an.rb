@@ -9,10 +9,11 @@ class SisterMercy::Commands::ChanAn < ChanCommand
 
     thread      = threadlist.random
     post        = thread.posts.random
-    +post.com.gsub(/<br[^>]*>/, "\n").gsub(/<a.*?href=(\S+)[^>]+>(.*?)<\/a>/, "\\2 (\\1)").gsub(/<[^>]+>/, '')
+    result = +post.com.gsub(/<br[^>]*>/, "\n").gsub(/<a.*?href=(\S+)[^>]+>(.*?)<\/a>/, "\\2 (\\1)").gsub(/<[^>]+>/, '')
     if post.tim
-      +"http://i.4cdn.org/an/#{post.tim}#{post.ext}"
+      result += "  http://i.4cdn.org/an/#{post.tim}#{post.ext}"
     end
+    result
   end
 
   def description
