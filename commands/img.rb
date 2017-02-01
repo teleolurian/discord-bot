@@ -1,16 +1,19 @@
+require 'cgi'
+
 class SisterMercy::Commands::Img < SisterMercy::Command
   def self.name; :img; end
 
-  def execute(event, subreddit=nil)
-    url = "http://imgur.com" + (subreddit ? "/r/#{subreddit}" : '')
+
+  def execute(event, *token)
+    url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=images&list=search&srnamespace=6&srsearch=%22#{CGI.escape token*' '}%22"
     begin
-      h = hpricot(url)
-      url2 = "http://imgur.com" + (h / 'a.image-list-link').random['href']
-      h2 = hpricot(url2)
-      item = (h2 / '.post-image source, .post-image img')
-      "http:" + item.last['src']
+      data = get_json_from url
+      images = data.query.search
+      return "I couldn't find anything..." unless images && images.length > 0
+      h = hpricot("https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image=" + CGI.escape(images.random.title))
+      (h / 'file urls file').text
     rescue
-      "I'm sooo sorry! I can't get that right now ;_;"
+      "I think I got confused ;_;"
     end
   end
 end
