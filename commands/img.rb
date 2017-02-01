@@ -10,8 +10,8 @@ class SisterMercy::Commands::Img < SisterMercy::Command
       data = get_json_from url
       images = data.query.search
       return "I couldn't find anything..." unless images && images.length > 0
-      h = hpricot("https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image=" + CGI.escape(images.random.title))
-      (h / 'file urls file').text
+      h = hpricot("https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?thumbwidth=800&image=" + CGI.escape(images.random.title))
+      (h / 'file urls thumbnail').text
     rescue
       "I think I got confused ;_;"
     end
