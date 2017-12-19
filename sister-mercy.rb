@@ -9,6 +9,6 @@ SisterMercy.load_commands('./commands')
 
 
 sister_mercy = SisterMercy.new
-sister_mercy.run
+sister_mercy.run unless ENV['NO_RUN']
 
 
