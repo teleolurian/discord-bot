@@ -45,6 +45,7 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
         final_response += ", and #{drug_brands.length - 50} others."
       end
     end
+    final_response
   end
 
   def interactions(*args)
