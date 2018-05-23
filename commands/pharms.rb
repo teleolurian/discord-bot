@@ -53,11 +53,14 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
     return "Syntax: interactions :drug1 + :drug2" unless drug1 && drug2
     return "Unknown drug #{drug1}" unless rc1 = rxcui_for(drug1)
     return "Unknown drug #{drug2}" unless rc2 = rxcui_for(drug2)
-    res = get_rxnav '/interaction/interaction.json?sources=drugbank&rxcui=' + rc1
-    ssp = res.interactionTypeGroup.first.interactionType.first.interactionPair rescue []
-    result = ssp.find {|ip| (ip.interactionConcept.last.minConceptItem.rxcui rescue FalseClass) == rc2 }
-    return "No interactions found" unless result
-    "[Severity: #{result.severity}] #{result.description}"
+    res = get_rxnav '/interaction/interaction.json?rxcui=' + rc1
+    interactions = (res.interactionTypeGroup rescue []).map do |tg|
+      pairs = tg.interactionType.first.interactionPair rescue []
+      result = pairs.find {|ip| ip.interactionConcept.last.minConceptItem.rxcui rescue FalseClass) == rc2 }
+      "[#{tg.sourceName}] #{result.description}"
+    end.compact
+    return "No interactions found" if interactions.empty?
+    interactions.join("\n")
   end
 
 
