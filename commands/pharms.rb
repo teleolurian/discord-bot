@@ -34,7 +34,7 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
     return "No valid search terms found!" if rxcs.empty?
     res = get_rxnav '/Prescribe/brands.json?ingredientids=' + rxcs.join(?+)
     drug_brands = res.brandGroup.conceptProperties rescue []
-
+    drug_brands ||= []
     final_response = ''
     final_response += "Skipping unknown drugs: #{unknowns.join ', '}\n" unless unknowns.empty?
     final_response += "#{drug_brands.length} brands found."
