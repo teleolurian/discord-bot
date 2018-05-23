@@ -36,7 +36,7 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
     drug_brands = res.brandGroup.conceptProperties rescue []
 
     final_response = ''
-    final_response += "Skipping unknown drugs: #{unknowns.join ', '}\n" unless unknonws.empty?
+    final_response += "Skipping unknown drugs: #{unknowns.join ', '}\n" unless unknowns.empty?
     final_response += "#{drug_brands.length} brands found."
     unless drug_brands.empty?
       final_response += "\n"
