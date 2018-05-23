@@ -9,6 +9,10 @@ class String
   def +@
     HTMLEntities.new.decode(self)
   end
+
+  def trim
+    gsub(/^\s+|\s+$/, '')
+  end
 end
 
 class Array
