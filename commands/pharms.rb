@@ -6,7 +6,7 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
   end
 
   def rxcui_for(drugname)
-    result = get_rxnav '/rxcui.json?name=' + drugname
+    result = get_rxnav '/rxcui.json?name=' + drugname.trim
     result.idGroup.rxnormId[0] rescue nil
   end
 
