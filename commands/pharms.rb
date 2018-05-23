@@ -1,4 +1,4 @@
-class SisterMercy::Commands::Rx < SisterMercy::Commands
+class SisterMercy::Commands::Rx < SisterMercy::Command
   RXNAV_BASE = 'https://rxnav.nlm.nih.gov/REST'
 
   def get_rxnav(path)
