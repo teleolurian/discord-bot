@@ -56,7 +56,7 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
     res = get_rxnav '/interaction/interaction.json?rxcui=' + rc1
     interactions = (res.interactionTypeGroup rescue []).map do |tg|
       pairs = tg.interactionType.first.interactionPair rescue []
-      result = pairs.find {|ip| ip.interactionConcept.last.minConceptItem.rxcui rescue FalseClass) == rc2 }
+      result = pairs.find {|ip| (ip.interactionConcept.last.minConceptItem.rxcui rescue FalseClass) == rc2 }
       "[#{tg.sourceName}] #{result.description}"
     end.compact
     return "No interactions found" if interactions.empty?
