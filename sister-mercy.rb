@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
-require './auth2'
+require './auth'
 Bundler.require(:default)
 
 require './lib/sister-mercy'
