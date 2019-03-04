@@ -6,8 +6,7 @@ class SisterMercy::Commands::Gif < SisterMercy::Command
 
   def execute(event, *imagesearch)
     imagesearch ||= %w{ wtf }
-    imagesearch.join!('-')
-    url = "http://www.tenor.com/search/" + URI.encode(book)
+    url = "http://www.tenor.com/search/" + URI.encode(imagesearch.join(?-)
     begin
       h = hpricot(url)
       (h / '#view .gallery-container .GifList .GifListItem a').random['href']
