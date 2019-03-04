@@ -5,7 +5,7 @@ class SisterMercy::Commands::Gif < SisterMercy::Command
 
 
   def execute(event, *imagesearch)
-    imagesearch ?= %w{ wtf }
+    imagesearch ||= %w{ wtf }
     imagesearch.join!('-')
     url = "http://www.tenor.com/search/" + URI.encode(book)
     begin
