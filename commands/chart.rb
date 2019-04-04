@@ -1,3 +1,6 @@
+require 'tempfile'
+require 'open-uri'
+
 class SisterMercy::Commands::StockChart < SisterMercy::Command
   def self.name; :chart; end
 
