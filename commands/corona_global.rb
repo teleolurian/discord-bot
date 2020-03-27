@@ -8,7 +8,8 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
     'Per Country Coronavirus'
   end
 
-  def execute(event, location, *args)
+  def execute(event, *args)
+    location = args.join ?-
     begin
       if location.length == 2 #state
         response = open "http://coronavirusapi.com/getTimeSeries/#{location.upcase}"
@@ -20,7 +21,7 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
         +result.join($/)
       else
         response = JSON.parse(get_raw_json_from("https://api.covid19api.com/country/#{location.downcase}/status/confirmed"))
-        result = response[-7..-1].map do |x|
+        result = response[-50..-1].map do |x|
             date = Time.parse(x['Date']).strftime "%Y %b %e"
             "#{date} - #{x['Country']} #{x['Province']} #{x['Cases']} cases"
         end
