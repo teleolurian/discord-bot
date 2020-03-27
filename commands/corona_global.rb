@@ -17,7 +17,7 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
           time = Time.at(row['seconds_since_Epoch'].to_i).strftime "%Y %b %e"
           "#{time} - #{row['tested']} tested / #{row['positive']} sick / #{row['deaths']} dead"
         end
-        +result.join $/
+        +result.join($/)
       else
         response = get_json_from "https://api/covid19api.com/country/#{location.downcase}/status/confirmed/live"
           result = response.sort {|x,y| x.Date <=> y.Date}[-7..-1].map do |x|
@@ -25,7 +25,7 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
             "#{date} - #{x.Cases} cases"
           end
         end
-        +result.join $/
+        +result.join($/)
       end
     end
   rescue
