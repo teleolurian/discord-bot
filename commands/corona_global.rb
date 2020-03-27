@@ -19,7 +19,7 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
         end
         +result.join($/)
       else
-        response = get_json_from "https://api/covid19api.com/country/#{location.downcase}/status/confirmed/live"
+        response = get_json_from "https://api/covid19api.com/country/#{location.downcase}/status/confirmed"
         result = response.sort {|x,y| x.Date <=> y.Date}[-7..-1].map do |x|
             date = Time.parse(x.Date).strftime "%Y %b %e"
             "#{date} - #{x.Cases} cases"
