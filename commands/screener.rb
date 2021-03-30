@@ -5,60 +5,10 @@ class SisterMercy::Commands::Screener < SisterMercy::Command
     screener: '/screener.ashx?%'
   })
   
-  TERMS = [
-    {
-      name: 'Index',
-      match: /index/i
-    },                                           
-    {
-      name: 'P/E',
-      match: /p(?:rofit)\s*(?:and|&|\/)*\s*e(?:arnings)/i 
-    },
-    {
-      name: 'EPS (ttm)',
-      match: /(?:diluted)*\s*e(?:arnings)*\s*p(?:er)*\s*s(?:hare)\s*(?:\(ttm\))/i
-    },
-    { 
-      name: 'Insider Own',
-      match: /insider?(?:\s*(?:own(?:er|ed|ership)))/i 
-    },
-    {
-      name: 'Shs Outstand',
-      match: /sh(?:are)*s\s*outstand(?:ing)*|outstand(?:ing)*\s*sh(?:are)*s/i
-    },
-    {
-      name: 'Perf Week',
-      match: /perf(?:ormance)*\s*week(?:ly)*|week(?:ly)*\s*perf(?:ormance)*/i
-    },
-    {
-      name: 'Market Cap',
-      match: /m(?:ar)*ke?t\scap(?:italization)*/i
-    },
-    {
-      name: 'Income',
-      match: /income/i
-    },
-    {
-      name: 'Sales',
-      match: /sales/i
-    },
-    {
-      name: 'Dividend',
-      match: /div(?:idend)*/i
-    },
-    {
-      name: 'Dividend %',
-      match: /div(?:idend)*\s(?:\%|pe?r?c(?:ent)*(?:age)*)/i
-    },
-    {
-      name: 'Optionable',
-      match: /option(?:able)*/i
-    },
-    {
-      name: 'Employees',
-      match: /emp(?:loyees?)?/i
-    }
-  ]
+  TERMS = IO.readlines(DATA).map do |row|
+    name, readable, match = row.split(?|,3).map(&:chomp)
+    {name: name, readable: readable, match: Regexp.new(match, ?i)}
+  end
   
   HELP_MESSAGES = {
     :short => "Use !screener stats [ticker] [statistic]",
@@ -85,7 +35,7 @@ class SisterMercy::Commands::Screener < SisterMercy::Command
     response = []
     TERMS.each do |term|
       if args =~ term[:match]
-        response.push [term[:name], h[term[:name]]].join(': ')
+        response.push [term[:readable], h[term[:name]]].join(': ')
       end
     end
     response
@@ -106,6 +56,25 @@ class SisterMercy::Commands::Screener < SisterMercy::Command
     response.join $/
   end
 end
-  
-  
-  
+__END__
+Index           | Stock Market Index                     | index
+P/E             | Profit / Earnings  (if profitable)     | p(?:rofit)\s*(?:and|&|\/)*\s*e(?:arnings)
+EPS (ttm)       | Diluted Earnings per Share             | (?:diluted)*\s*e(?:arnings)*\s*p(?:er)*\s*s(?:hare)\s*(?:\(ttm\))
+Insider Own     | % Insider Owned                        | insider?(?:\s*(?:own(?:er|ed|ership)))
+Shs Outstand    | Outstanding Shares OTM                 | sh(?:are)*s\s*outstand(?:ing)*|outstand(?:ing)*\s*sh(?:are)*s
+Perf Week       | Price Performance (week)               | perf(?:ormance)*\s*week(?:ly)*|week(?:ly)*\s*perf(?:ormance)*
+Market Cap      | Market Capitalization                  | m(?:ar)*ke?t\scap(?:italization)*
+Forward P/E     | Profit / Earnings (1y Forecast)        | fo?rwa?r?d\sp(?:rofit)\s*(?:and|&|\/)*\s*e(?:arnings)
+EPS next Y      | Earnings Per Share (1y Forecast)       | e(?:arnings)*\s*p(?:er)*\s*s(?:hare)(?:\snext\sy(?:ea)?r)
+Insider Trans   | Insider Transactions (Change in Owner) | insider\s*(?:transaction|txn)
+Shares Float    | Shares Float (Open Market)             | sh(?:are)*s\s*flo?a?t
+Short Ratio.    | Short Ratio (Percent Shares Short)     | sh(?:or)*t\s*(?:ratio|p(?:er)c(?:en)t)
+Income          | Income (trailing 1 year)               | inco?me?
+Sales           | Revenue                                | sales|rev(?:enue)
+Dividend        | Dividend $ per annum                   | div(?:idend)*
+Dividend %      | Dividend % per annum                   | div(?:idend)*\s(?:\%|pe?r?c(?:ent)*(?:age)*)
+Employees       | Number of Worker Drones.               | (?:emp(?:loyees?)|worker(?:\s*drone)s|slaves|peons|drones)
+Optionable      | Optionability (calls/puts)             | option(?:able)*
+Shortable       | Shortable                              | short(?:able)*
+Recom           | Analyst Ratings 1 (buy) - 5 (sell)     | analyst|(?:analyst\s+)*recomm?(?:end)*(?:ed|ation)*
+
