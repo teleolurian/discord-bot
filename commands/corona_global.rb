@@ -12,9 +12,13 @@ class SisterMercy::Commands::CoronaGlobal < SisterMercy::Command
     location = args.join ?-
     begin
       if location.length == 2 #state
-        response = JSON.parse get_raw_json_from "https://api.covidtracking.com/v1/states/#{location.downcase}/daily.json"
-        result = response[0..20].map do |x|
-          "#{x['dateChecked']} - #{x['totalTestResults']} tested / #{x['positiveCasesViral'] || x['totalTestsViral']} pozzed / #{x['death']} dead"
+
+        response = open "http://coronavirusapi.com/getTimeSeries/#{location.upcase}"
+        content = CSV.parse(response.read, headers: true)
+        result = content[-10..-1].map do |row|
+          time = Time.at(row['seconds_since_Epoch'].to_i).strftime "%Y %b %e"
+          "#{time} - #{row['tested']} tested / #{row['positive']} sick / #{row['deaths']} dead"
+
         end
         +result.join($/)
       else
