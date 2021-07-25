@@ -26,7 +26,7 @@ class SisterMercy
   attr_reader :bot
 
   def initialize
-    @bot = Discordrb::Commands::CommandBot.new token: AUTH_TOKEN, client_id: 174210304329252864, prefix: '!'
+    @bot = Discordrb::Commands::CommandBot.new token: AUTH_TOKEN, client_id: 174210304329252864, prefix: '!', application_id: 174210304329252864
     puts @bot.invite_url
     init_commands
   end

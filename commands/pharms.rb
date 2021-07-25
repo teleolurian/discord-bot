@@ -64,12 +64,12 @@ class SisterMercy::Commands::Rx < SisterMercy::Command
   end
 
 
-  def execute(event, command, *args)
-    cmd = command.downcase.to_sym
+  def execute(event, *args)
+    cmd = args.shift.to_s.downcase.to_sym
     if RX_COMMANDS.include?(cmd)
       self.send(cmd, *args)
     else
-      "I don't have that power yet... but I'm studying!"
+      "Commands: \n!rx brands (chemical) \n!rx interactions drug1 + drug2"
     end
   end
 end
